@@ -2,6 +2,7 @@
 #include "Account.hpp"
 #include "Bank.hpp"
 #include <fstream>
+#include <cmath>
 #include <sstream>
 #include <string>
 #include <iostream>
@@ -101,12 +102,64 @@ int Bank::binarySearchByBalance(int targetValue){
     return -1;
 }
 
-int Bank::jumpSearchByNumber() {
+int Bank::jumpSearchByNumber(int targetAccountNumber) {
+    if(accountList.size() == 0) return;
+    int vectorSize =  accountList.size();
+    int blockStartIndex = 0;
+    int blockEndIndex = std::sqrt(vectorSize);
 
+
+
+    while(accountList[std::min(blockEndIndex, vectorSize - 1)].getAccountNumber() < targetAccountNumber) {
+        blockStartIndex = blockEndIndex;
+        blockEndIndex += std::sqrt(vectorSize);
+
+        if (blockStartIndex >= accountList.size()) return;
+    }
+
+    while(accountList[blockStartIndex].getAccountNumber() < targetAccountNumber) {
+        blockStartIndex++;
+
+        if(blockStartIndex == std::min(blockEndIndex, vectorSize)) {
+            return;
+        }
+    }
+
+    if(accountList[blockStartIndex].getAccountNumber() == targetAccountNumber) {
+        return blockStartIndex;
+    }
+
+    return;
 }
 
-int Bank::jumpSearchByBalance() {
+int Bank::jumpSearchByBalance(int targetBalance) {
+    if(accountList.size() == 0) return;
+    int vectorSize =  accountList.size();
+    int blockStartIndex = 0;
+    int blockEndIndex = std::sqrt(vectorSize);
 
+
+
+    while(accountList[std::min(blockEndIndex, vectorSize - 1)].getAccountNumber() < targetBalance) {
+        blockStartIndex = blockEndIndex;
+        blockEndIndex += std::sqrt(vectorSize);
+
+        if (blockStartIndex >= accountList.size()) return;
+    }
+
+    while(accountList[blockStartIndex].getBalance() < targetBalance) {
+        blockStartIndex++;
+
+        if(blockStartIndex == std::min(blockEndIndex, vectorSize)) {
+            return;
+        }
+    }
+
+    if(accountList[blockStartIndex].getBalance() == targetBalance) {
+        return blockStartIndex;
+    }
+
+    return;
 }
 
 int Bank::linearSearchByNumber(int targetValue){
@@ -293,5 +346,3 @@ void Bank::transferB(int& sender, int amount, int& receiver) {
     accountList[binarySearchByNumber(sender)].withdraw(amount);
     accountList[binarySearchByNumber(receiver)].deposit(amount); 
 }
-
-

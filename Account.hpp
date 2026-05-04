@@ -4,40 +4,32 @@
 
 class Account {
     public:
-        Account(int accountNumber, int balance, std::string first, std::string last) {}
+        Account(int accountNumber, int balance, std::string first, std::string last);
 
-        int accountNumberGenerator() {
-            std::string account = "0";
-            std::string numChars = "0123456789";
+        //int accountNumberGenerator() {
+        //    std::string account = "0";
+        //    std::string numChars = "0123456789";
 
-            for(int i = 0; i < 6; i++) {
-                int randomNum = rand() % 11;
-                account[i] = numChars[randomNum];
-            }
-    
-            return std::stoi(account);
-        }
+        //    for(int i = 0; i < 6; i++) {
+        //        int randomNum = rand() % 11;
+        //        account[i] = numChars[randomNum];
+        //    }
 
-        int balanceGenerator() {
-            int randomNum = rand() % 2000001;
-            return randomNum;
-        }
+        //    return std::stoi(account);
+        //}
 
-        std::string getFirstName() const{
-            return first;
-        }
+        //int balanceGenerator() {
+        //    int randomNum = rand() % 2000001;
+        //    return randomNum;
+        //}
 
-        std::string getLastName() const{
-            return last;
-        }
+        std::string getFirstName() const;
 
-        int getBalance() const {
-            return balance;
-        }
+        std::string getLastName() const;
 
-        int getAccountNumber() const {
-            return accountNumber;
-        }
+        int getBalance() const;
+
+        int getAccountNumber() const;
 
         void withdraw(int amount);
 

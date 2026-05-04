@@ -17,9 +17,9 @@ class Bank {
 
         int binarySearchByBalance(int accountNumber);
 
-        int jumpSearchByNumber();
+        int jumpSearchByNumber(int targetAccountNumber);
 
-        int jumpSearchByBalance();
+        int jumpSearchByBalance(int targetBalance);
 
         int linearSearchByBalance(int targetValue);
 
