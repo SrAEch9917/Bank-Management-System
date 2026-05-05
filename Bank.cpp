@@ -114,14 +114,14 @@ int Bank::jumpSearchByNumber(int targetAccountNumber) {
         blockStartIndex = blockEndIndex;
         blockEndIndex += std::sqrt(vectorSize);
 
-        if (blockStartIndex >= accountList.size()) return;
+        if (blockStartIndex >= accountList.size()) return -1;
     }
 
     while(accountList[blockStartIndex].getAccountNumber() < targetAccountNumber) {
         blockStartIndex++;
 
         if(blockStartIndex == std::min(blockEndIndex, vectorSize)) {
-            return;
+            return -1;
         }
     }
 
@@ -129,7 +129,7 @@ int Bank::jumpSearchByNumber(int targetAccountNumber) {
         return blockStartIndex;
     }
 
-    return;
+    return -1;
 }
 
 int Bank::jumpSearchByBalance(int targetBalance) {
@@ -144,14 +144,14 @@ int Bank::jumpSearchByBalance(int targetBalance) {
         blockStartIndex = blockEndIndex;
         blockEndIndex += std::sqrt(vectorSize);
 
-        if (blockStartIndex >= accountList.size()) return;
+        if (blockStartIndex >= accountList.size()) return -1;
     }
 
     while(accountList[blockStartIndex].getBalance() < targetBalance) {
         blockStartIndex++;
 
         if(blockStartIndex == std::min(blockEndIndex, vectorSize)) {
-            return;
+            return -1;
         }
     }
 
@@ -159,7 +159,7 @@ int Bank::jumpSearchByBalance(int targetBalance) {
         return blockStartIndex;
     }
 
-    return;
+    return -1;
 }
 
 int Bank::linearSearchByNumber(int targetValue){
@@ -345,4 +345,8 @@ void Bank::depositB(int& accountNumber, int amount) {
 void Bank::transferB(int& sender, int amount, int& receiver) {
     accountList[binarySearchByNumber(sender)].withdraw(amount);
     accountList[binarySearchByNumber(receiver)].deposit(amount); 
+}
+
+int Bank::getBankSize() {
+    return accountList.size();
 }

@@ -9,12 +9,10 @@ class Account {
         //int accountNumberGenerator() {
         //    std::string account = "0";
         //    std::string numChars = "0123456789";
-
         //    for(int i = 0; i < 6; i++) {
         //        int randomNum = rand() % 11;
         //        account[i] = numChars[randomNum];
         //    }
-
         //    return std::stoi(account);
         //}
 
@@ -46,8 +44,6 @@ class Account {
         std::string first;
         std::string last;
 };
-
-
 
 
 //sets, vector

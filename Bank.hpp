@@ -56,6 +56,8 @@ class Bank {
         void depositB(int& accountNumber, int amount);
 
         void transferB(int& sender, int amount, int& receiver);
+
+        int getBankSize();
         
 
     private:
