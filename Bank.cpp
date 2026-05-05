@@ -1,6 +1,7 @@
 #include <vector>
 #include "Account.hpp"
 #include "Bank.hpp"
+#include <algorithm>
 #include <fstream>
 #include <cmath>
 #include <sstream>
@@ -105,74 +106,76 @@ void Bank::updateCSV(const std::string& fileName){
   file.close();
 }
 
-//Demo functions
-void Bank::demo(Bank bank) {
-    int answer;
-
-    std::cout << "Welcome to the Big City Bank. " 
-              << "Today we'll be familiarizing you with our banking system. "
-              << "Firstly, we'll be going through the various means of sorting all our bank accounts."
-              << "Then, we'll move on to how to find a particular account. "
-              << "Type 1 when you're ready to begin. " << std::endl;
-    std::cin >> answer;
-
-    selectSort(bank);
-    selectSearch(bank);
-    
-}
-
-void Bank::selectSort(Bank bank) {
-    int answer;
-    std::cout << "There are several means of organizing our existing accounts. "
-              << "These would include insertion sort, merge sort and quick sort. "
-              << "Each algorithm has a rate of completion, some are better than others. "
-              << "Here are your options: " << std::endl;
-    std::cout << "Insertion Sort by Number: 1     Merge Sort by Number: 2    Quick Sort by Number: 3" << std::endl;
-    std::cout << "Insertion Sort by Balance: 4     Merge Sort by Balance: 5    Quick Sort by Balance: 6" << std::endl;
-    std::cin >> answer;
-
-    while(answer > 6 || answer < 0){
-        std::cout << "Please make a choice within the selection. " << std::endl;
-        std::cin >> answer;
-    }
-
-    switch (answer) {
-        case 1: bank.insertionSortByNumber(); break;
-        case 2: bank.mergeSortByNumber(); break;
-        case 3: bank.quickSortByNumber(); break;
-        case 4: bank.insertionSortByBalance(); break;
-        case 5: bank.mergeSortByBalance(); break;
-        case 6: bank.quickSortByBalance(); break;
-    }
-
-    std::cout << "Bank accounts have now been sorted according to your selection. " << std::endl;
-}
-
-void Bank::selectSearch(Bank bank) {
-    int answer;
-    std::cout << "Now you can select how you would like to search for an account. "
-              << "Remain consistent in your selection. For instance, if you opted for a sort by number, continue to search by account number. "
-              << "Here are your options: "
-              << "Binary Search by Number: 1  Jump Search by Number: 2  Linear Search by Number: 3 "
-              << "Binary Search by Balance: 4  Jump Search by Balance: 5  Linear Search by Balance: 6 " << std::endl;
-
-    while(answer > 6 || answer < 0){
-        std::cout << "Please make a choice within the selection. " << std::endl;
-        std::cin >> answer;
-    }
-
-    std::cout << "Now you can type the account number you wish to search for. " << std::endl;
-    std::cin >> answer;
-
-    switch (answer) {
-        case 1: bank.binarySearchByNumber(answer); break;
-        case 2: bank.jumpSearchByNumber(answer); break;
-        case 3: bank.linearSearchByNumber(answer); break;
-        case 4: bank.binarySearchByBalance(answer); break;
-        case 5: bank.jumpSearchByBalance(answer); break;
-        case 6: bank.linearSearchByBalance(answer); break;
-    }
-}
+////Demo functions
+//void Bank::demo(Bank bank) {
+//    int answer;
+//
+//    std::cout << "Welcome to the Big City Bank. " 
+//              << "Today we'll be familiarizing you with our banking system. "
+//              << "Firstly, we'll be going through the various means of sorting all our bank accounts."
+//              << "Then, we'll move on to how to find a particular account. "
+//              << "Type 1 when you're ready to begin. " << std::endl;
+//    std::cin >> answer;
+//
+//    selectSort(bank);
+//    selectSearch(bank);
+//    
+//}
+//
+//void Bank::selectSort(Bank bank) {
+//    int answer;
+//    std::cout << "There are several means of organizing our existing accounts. "
+//              << "These would include insertion sort, merge sort and quick sort. "
+//              << "Each algorithm has a rate of completion, some are better than others. "
+//              << "Here are your options: " << std::endl;
+//    std::cout << "Insertion Sort by Number: 1     Merge Sort by Number: 2    Quick Sort by Number: 3" << std::endl;
+//    std::cout << "Insertion Sort by Balance: 4     Merge Sort by Balance: 5    Quick Sort by Balance: 6" << std::endl;
+//    std::cin >> answer;
+//
+//    while(answer > 6 || answer < 0){
+//        std::cout << "Please make a choice within the selection. " << std::endl;
+//        std::cin >> answer;
+//    }
+//
+//    switch (answer) {
+//        case 1: bank.insertionSortByNumber(); break;
+//        case 2: bank.mergeSortByNumber(); break;
+//        case 3: bank.quickSortByNumber(); break;
+//        case 4: bank.insertionSortByBalance(); break;
+//        case 5: bank.mergeSortByBalance(); break;
+//        case 6: bank.quickSortByBalance(); break;
+//    }
+//
+//    std::cout << "Bank accounts have now been sorted according to your selection. " << std::endl;
+//}
+//
+//void Bank::selectSearch(Bank bank) {
+//    int answer;
+//    std::cout << "Now you can select how you would like to search for an account. "
+//              << "Remain consistent in your selection. For instance, if you opted for a sort by number, continue to search by account number. "
+//              << "Here are your options: "
+//              << "Binary Search by Number: 1  Jump Search by Number: 2  Linear Search by Number: 3 "
+//              << "Binary Search by Balance: 4  Jump Search by Balance: 5  Linear Search by Balance: 6 " << std::endl;
+//
+//    while(answer > 6 || answer < 0){
+//        std::cout << "Please make a choice within the selection. " << std::endl;
+//        std::cin >> answer;
+//    }
+//
+//    std::cout << "Now you can type the account number you wish to search for. " << std::endl;
+//    std::cin >> answer;
+//
+//    switch (answer) {
+//        case 1: bank.binarySearchByNumber(answer); break;
+//        case 2: bank.jumpSearchByNumber(answer); break;
+//        case 3: bank.linearSearchByNumber(answer); break;
+//        case 4: bank.binarySearchByBalance(answer); break;
+//        case 5: bank.jumpSearchByBalance(answer); break;
+//        case 6: bank.linearSearchByBalance(answer); break;
+//    }
+//
+//    
+//}
 
 //Search functions
 int Bank::binarySearchByNumber(int targetValue){
@@ -220,7 +223,7 @@ int Bank::binarySearchByBalance(int targetValue){
 }
 
 int Bank::jumpSearchByNumber(int targetAccountNumber) {
-    if(accountList.size() == 0) return;
+    if(accountList.size() == 0) return -1;
     int vectorSize =  accountList.size();
     int blockStartIndex = 0;
     int blockEndIndex = std::sqrt(vectorSize);
@@ -250,7 +253,7 @@ int Bank::jumpSearchByNumber(int targetAccountNumber) {
 }
 
 int Bank::jumpSearchByBalance(int targetBalance) {
-    if(accountList.size() == 0) return;
+    if(accountList.size() == 0) return -1;
     int vectorSize =  accountList.size();
     int blockStartIndex = 0;
     int blockEndIndex = std::sqrt(vectorSize);

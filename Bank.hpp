@@ -16,15 +16,12 @@ class Bank {
 
         //Demo
 
-        void demo(Bank bank);
+        //void demo(Bank bank);
 
-        void selectSort(Bank bank);
+        //void selectSort(Bank bank);
 
-        void selectSearch(Bank bank);
-
-
+        //void selectSearch(Bank bank);
         
-
         //Search
         int binarySearchByNumber(int accountNumber);
 
