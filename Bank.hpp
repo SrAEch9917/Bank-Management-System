@@ -8,13 +8,22 @@ class Bank {
 
         void createCSV();
 
-        void demo(Bank bank);
-
         void loadCSV(const std::string& file);
 
         void updateCSV(const std::string& fileName);
 
-        void BankupdateCSV(const std::string& file);
+        void bankUpdateCSV(const std::string& file);
+
+        //Demo
+
+        void demo(Bank bank);
+
+        void selectSort(Bank bank);
+
+        void selectSearch(Bank bank);
+
+
+        
 
         //Search
         int binarySearchByNumber(int accountNumber);
