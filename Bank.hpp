@@ -6,6 +6,10 @@ class Bank {
     public:
         Bank(std::vector<Account>& bank);
 
+        void createCSV();
+
+        void demo(Bank bank);
+
         void loadCSV(const std::string& file);
 
         void updateCSV(const std::string& fileName);

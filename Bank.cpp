@@ -5,10 +5,57 @@
 #include <cmath>
 #include <sstream>
 #include <string>
+#include <random>
 #include <iostream>
 
 
 Bank::Bank(std::vector<Account>& bank) : accountList(bank) {}
+
+void Bank::createCSV() {
+        srand(time(0));
+
+    int amount = 1000000;
+    std::vector<int> numbers;
+
+    std::vector<std::string> firstNames = {"James", "Mary", "Robert", "Patricia", "John", "Jennifer", "Michael", "Linda", 
+      "David", "Elizabeth", "William", "Barbara", "Richard", "Susan", "Joseph", "Jessica", 
+      "Thomas", "Sarah", "Christopher", "Karen", "Charles", "Lisa", "Daniel", "Nancy", 
+      "Matthew", "Sandra", "Anthony", "Betty", "Mark", "Ashley", "Donald", "Emily", 
+      "Steven", "Kimberly", "Andrew", "Margaret", "Paul", "Donna", "Joshua", "Michelle", 
+      "Kenneth", "Carol", "Kevin", "Amanda", "Brian", "Melissa", "George", "Deborah", 
+      "Timothy", "Stephanie"};  
+
+    std::vector<std::string> lastNames = {"Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", 
+      "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", 
+      "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White", 
+      "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson", "Walker", "Young", 
+      "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores", 
+      "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", 
+      "Carter", "Roberts"}; 
+    
+    for (int i = 0; i < amount; i++){
+      numbers.push_back(i);
+    }  
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    std::shuffle(numbers.begin(), numbers.end(), g);    
+
+    std::ofstream file("accountData.csv");
+
+    file << "Account,First,Last,Balance\n"; 
+    for (int i = 0; i < amount; i++){
+      file << numbers[i] << ","
+           << firstNames[rand()% 50] << ","
+           << lastNames[rand()% 50] << ","
+           << rand()% 20001 << "\n";
+    }
+
+    file.close();
+
+    std::cout << "1 million accounts have been created." << std::endl;
+}
 
 void Bank::loadCSV(const std::string& fileName){
   std::ifstream file(fileName);
@@ -57,6 +104,68 @@ void Bank::updateCSV(const std::string& fileName){
   file.close();
 }
 
+void demo(Bank bank) {
+    int answer;
+
+    std::cout << "Welcome to the Big City Bank. " 
+              << "Today we'll be familiarizing you with our banking system. "
+              << "Firstly, we'll be going through the various means of sorting all our bank accounts."
+              << "Then, we'll move on to how to find a particular account. "
+              << "Type 1 when you're ready to begin. " << std::endl;
+
+    std::cin >> answer;
+
+    std::cout << "There are several means of organizing our existing accounts. "
+              << "These would include insertion sort, merge sort and quick sort. "
+              << "Each algorithm has a rate of completion, some better than others. "
+              << "Here are your options: " << std::endl;
+    std::cout << "Insertion Sort by Number: 1     Merge Sort by Number: 2    Quick Sort by Number: 3" << std::endl;
+    std::cout << "Insertion Sort by Balance: 4     Merge Sort by Balance: 5    Quick Sort by Balance: 6" << std::endl;
+
+    std::cin >> answer;
+
+    while(answer > 6 || answer < 0){
+        std::cout << "Please make a choice within the selection. " << std::endl;
+        std::cin >> answer;
+    }
+
+    switch (answer) {
+        case 1: bank.insertionSortByNumber(); break;
+        case 2: bank.mergeSortByNumber(); break;
+        case 3: bank.quickSortByNumber(); break;
+        case 4: bank.insertionSortByBalance(); break;
+        case 5: bank.mergeSortByBalance(); break;
+        case 6: bank.quickSortByBalance(); break;
+    }
+
+    std::cout << "Bank accounts have now been sorted according to your selection. "
+              << "Now you can select how you would like to search for an account. "
+              << "Remain consistent in your selection. For instance, if you opted for a sort by number, continue to search by account number. "
+              << "Here are your options: "
+              << "Binary Search by Number: 1  Jump Search by Number: 2  Linear Search by Number: 3 "
+              << "Binary Search by Balance: 4  Jump Search by Balance: 5  Linear Search by Balance: 6 " << std::endl;
+
+    while(answer > 6 || answer < 0){
+        std::cout << "Please make a choice within the selection. " << std::endl;
+        std::cin >> answer;
+    }
+
+    int accountNumber;
+    std::cout << "Now you can type the account number you wish to search for. " << std::endl;
+    std::cin >> accountNumber;
+
+    switch (answer) {
+        case 1: binarySearchByNumber(accountNumber); break;
+        case 2: jumpSearchByNumber(accountNumber); break;
+        case 3: linearSearchByNumber(accountNumber); break;
+        case 4: binarySearchByBalance(accountNumber); break;
+        case 5: jumpSearchByBalance(accountNumber); break;
+        case 6: linearSearchByBalance(accountNumber); break;
+    }
+
+
+    
+}
 //Search functions
 int Bank::binarySearchByNumber(int targetValue){
   int left = 0; 
