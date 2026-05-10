@@ -497,6 +497,7 @@ void Bank::depositB(int& accountNumber, int amount) {
 }
 
 void Bank::transferB(int& sender, int amount, int& receiver) {
+    if (accountList[sender].getAccountNumber() == -1 || accountList[receiver].getAccountNumber() == -1) return;
     Account senderAcc = accountList[binarySearchByNumber(sender)];
     if(senderAcc.getBalance() < amount) return;
     senderAcc.withdraw(amount);
