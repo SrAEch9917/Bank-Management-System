@@ -1,6 +1,8 @@
 #include "Account.hpp"
 
-Account::Account(int accountNumber, int balance, std::string first, std::string last) {}
+Account::Account(int accNum, int bal, std::string fName, std::string lName) : accountNumber(accNum), balance(bal), firstName(fName), lastName(lName) {}
+
+Account::Account() : accountNumber(0), balance(0), firstName(""), lastName("") {}
 
 //int Account::accountNumberGenerator() {
 //    std::string account;
@@ -20,12 +22,24 @@ Account::Account(int accountNumber, int balance, std::string first, std::string 
 //    return randomNum;
 //}
 
+std::string Account::getFirstName() const {
+    return firstName;
+}
+
+std::string Account::getLastName() const {
+    return lastName;
+}
+
+int Account::getAccountNumber() const {
+    return accountNumber;
+}
+
 int Account::getBalance() const {
     return balance;
 }
 
 void Account::withdraw(int amount) {
-    if(detectError(amount)) return;
+    if(overdraftDetection(amount)) return;
 
     balance -= amount;
 }
@@ -39,7 +53,7 @@ void Account::transfer(Account& sender, int amount, Account& receiver) {
     receiver.deposit(amount);
 }
 
-bool Account::detectError(int amount) {
+bool Account::overdraftDetection(int amount) {
     if(getBalance() < amount) {
         std::cout << "Inadequate funds for transaction. " << std::endl;
         return true;

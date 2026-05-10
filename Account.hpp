@@ -6,6 +6,8 @@ class Account {
     public:
         Account(int accountNumber, int balance, std::string first, std::string last);
 
+        Account();
+
         //int accountNumberGenerator() {
         //    std::string account = "0";
         //    std::string numChars = "0123456789";
@@ -35,14 +37,14 @@ class Account {
 
         void transfer(Account& sender, int amount, Account& receiver);
 
-        bool detectError(int amount);
+        bool overdraftDetection(int amount);
 
     private:
 
         int accountNumber;
         int balance;
-        std::string first;
-        std::string last;
+        std::string firstName;
+        std::string lastName;
 };
 
 

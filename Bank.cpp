@@ -8,82 +8,84 @@
 #include <string>
 #include <random>
 #include <iostream>
+#include <chrono>
 
 
 Bank::Bank(std::vector<Account>& bank) : accountList(bank) {}
 
 //CSV functions
-void Bank::createCSV() {
-        srand(time(0));
+//void Bank::createCSV() {
+//        srand(time(0));
+//
+//    int amount = 1000000;
+//    std::vector<int> numbers;
+//
+//    std::vector<std::string> firstNames = {"James", "Mary", "Robert", "Patricia", "John", "Jennifer", "Michael", "Linda", 
+//      "David", "Elizabeth", "William", "Barbara", "Richard", "Susan", "Joseph", "Jessica", 
+//      "Thomas", "Sarah", "Christopher", "Karen", "Charles", "Lisa", "Daniel", "Nancy", 
+//      "Matthew", "Sandra", "Anthony", "Betty", "Mark", "Ashley", "Donald", "Emily", 
+//      "Steven", "Kimberly", "Andrew", "Margaret", "Paul", "Donna", "Joshua", "Michelle", 
+//      "Kenneth", "Carol", "Kevin", "Amanda", "Brian", "Melissa", "George", "Deborah", 
+//      "Timothy", "Stephanie"};  
+//
+//    std::vector<std::string> lastNames = {"Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", 
+//      "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", 
+//      "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White", 
+//      "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson", "Walker", "Young", 
+//      "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores", 
+//      "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", 
+//      "Carter", "Roberts"}; 
+//    
+//    for (int i = 0; i < amount; i++){
+//      numbers.push_back(i);
+//    }  
+//
+//    std::random_device rd;
+//    std::mt19937 g(rd());
+//
+//    std::shuffle(numbers.begin(), numbers.end(), g);    
+//
+//    std::ofstream file("accountData.csv");
+//
+//    file << "Account,First,Last,Balance\n"; 
+//    for (int i = 0; i < amount; i++){
+//      file << numbers[i] << ","
+//           << firstNames[rand()% 50] << ","
+//           << lastNames[rand()% 50] << ","
+//           << rand()% 20001 << "\n";
+//    }
+//
+//    file.close();
+//
+//    std::cout << "1 million accounts have been created." << std::endl;
+//}
 
-    int amount = 1000000;
-    std::vector<int> numbers;
+void Bank::loadCSV(const std::string& fileName) {
+    std::ifstream file(fileName);
 
-    std::vector<std::string> firstNames = {"James", "Mary", "Robert", "Patricia", "John", "Jennifer", "Michael", "Linda", 
-      "David", "Elizabeth", "William", "Barbara", "Richard", "Susan", "Joseph", "Jessica", 
-      "Thomas", "Sarah", "Christopher", "Karen", "Charles", "Lisa", "Daniel", "Nancy", 
-      "Matthew", "Sandra", "Anthony", "Betty", "Mark", "Ashley", "Donald", "Emily", 
-      "Steven", "Kimberly", "Andrew", "Margaret", "Paul", "Donna", "Joshua", "Michelle", 
-      "Kenneth", "Carol", "Kevin", "Amanda", "Brian", "Melissa", "George", "Deborah", 
-      "Timothy", "Stephanie"};  
+    if (!file.is_open()) {
+        std::cout << "Error: File not found.";
+        return;
+    }
 
-    std::vector<std::string> lastNames = {"Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", 
-      "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", 
-      "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White", 
-      "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson", "Walker", "Young", 
-      "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores", 
-      "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", 
-      "Carter", "Roberts"}; 
-    
-    for (int i = 0; i < amount; i++){
-      numbers.push_back(i);
-    }  
+    accountList.reserve(1000000);
 
-    std::random_device rd;
-    std::mt19937 g(rd());
+    std::string line;
+    std::getline(file, line); // skip header
 
-    std::shuffle(numbers.begin(), numbers.end(), g);    
+    while (std::getline(file, line)) {
+        std::stringstream s(line);
+        std::string account, bal, first, last;
 
-    std::ofstream file("accountData.csv");
+        std::getline(s, account, ',');
+        std::getline(s, bal, ',');
+        std::getline(s, first, ',');
+        std::getline(s, last, ',');
 
-    file << "Account,First,Last,Balance\n"; 
-    for (int i = 0; i < amount; i++){
-      file << numbers[i] << ","
-           << firstNames[rand()% 50] << ","
-           << lastNames[rand()% 50] << ","
-           << rand()% 20001 << "\n";
+        accountList.emplace_back(std::stoi(account), std::stoi(bal), first, last);
     }
 
     file.close();
-
-    std::cout << "1 million accounts have been created." << std::endl;
-}
-
-void Bank::loadCSV(const std::string& fileName){
-  std::ifstream file(fileName);
-
-  if(!file.is_open()){
-    std::cout << "Error: File not found.";
-    return;
-  }
-
-  accountList.reserve(1000000);
-
-  std::string line;
-  std::getline(file, line);
-
-  while(std::getline(file, line)){
-    std::stringstream s(line);
-    std::string account, first, last, bal;
-
-    std::getline(s, account, ',');
-    std::getline(s, first, ',');
-    std::getline(s, last, ',');
-    std::getline(s, bal);
-
-    accountList.emplace_back(std::stoi(account), first, last, std::stoi(bal));
-  }
-  file.close();
 }
 
 void Bank::updateCSV(const std::string& fileName){
@@ -97,10 +99,10 @@ void Bank::updateCSV(const std::string& fileName){
   file << "Account,First,Last,Balance\n";
 
   for(const auto & account : accountList){
-    file << account.getAccountNumber() << ","
-         << account.getFirstName() << ","
-         << account.getLastName() << ","
-         << account.getBalance() << "\n";
+    file << account.getAccountNumber() << ", "
+         << account.getBalance() << ", "
+         << account.getFirstName() << ", "
+         << account.getLastName() << "\n";
   }
 
   file.close();
@@ -224,7 +226,7 @@ int Bank::binarySearchByBalance(int targetValue){
 
 int Bank::jumpSearchByNumber(int targetAccountNumber) {
     if(accountList.size() == 0) return -1;
-    int vectorSize =  accountList.size();
+    int vectorSize = accountList.size();
     int blockStartIndex = 0;
     int blockEndIndex = std::sqrt(vectorSize);
 
@@ -260,7 +262,7 @@ int Bank::jumpSearchByBalance(int targetBalance) {
 
 
 
-    while(accountList[std::min(blockEndIndex, vectorSize - 1)].getAccountNumber() < targetBalance) {
+    while(accountList[std::min(blockEndIndex, vectorSize - 1)].getBalance() < targetBalance) {
         blockStartIndex = blockEndIndex;
         blockEndIndex += std::sqrt(vectorSize);
 
@@ -371,7 +373,7 @@ int Bank::partitionByBalance(int low, int high){
   
   }
 
-void Bank::merge(int left, int middle, int right, bool compare = true){
+void Bank::merge(int left, int middle, int right, bool compare){
 
     std::vector<Account> left_side;
     std::vector<Account> right_side;
@@ -413,8 +415,28 @@ void Bank::merge(int left, int middle, int right, bool compare = true){
     }
 }
 
-void Bank::mergeSort(int left, int right, bool compare = true){
+void Bank::mergeSortByNumber() {
+    mergeSort(0, accountList.size() - 1, true);
+}
 
+void Bank::mergeSortByBalance() {
+    mergeSort(0, accountList.size() - 1, false);
+}
+
+void Bank::quickSortByNumber() {
+
+    int low = 0;
+    int high = accountList.size() - 1;
+
+    if (low < high){
+    int pivot = partitionByNumber(low, high);
+
+    quickSortByNumber(low, pivot - 1);
+    quickSortByNumber(pivot + 1, high);
+  }
+}
+
+void Bank::mergeSort(int left, int right, bool compare){
     if (left >= right){
         return;
     }
@@ -433,6 +455,18 @@ void Bank::mergeSortByNumber(int left, int right) {
 
 void Bank::mergeSortByBalance(int left, int right) {
     mergeSort(0, accountList.size() - 1, false);
+}
+
+void Bank::quickSortByBalance() {
+    int low = 0;
+    int high = accountList.size() - 1;
+
+    if (low < high){
+        int pivot = partitionByBalance(low, high);
+
+        quickSortByBalance(low, pivot - 1);
+        quickSortByBalance(pivot + 1, high);
+    }
 }
 
 void Bank::quickSortByNumber(int low, int high) {
@@ -463,8 +497,10 @@ void Bank::depositB(int& accountNumber, int amount) {
 }
 
 void Bank::transferB(int& sender, int amount, int& receiver) {
-    accountList[binarySearchByNumber(sender)].withdraw(amount);
-    accountList[binarySearchByNumber(receiver)].deposit(amount); 
+    Account senderAcc = accountList[binarySearchByNumber(sender)];
+    if(senderAcc.getBalance() < amount) return;
+    senderAcc.withdraw(amount);
+    accountList[binarySearchByNumber(receiver)].deposit(amount);
 }
 
 int Bank::getBankSize() {

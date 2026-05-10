@@ -12,8 +12,6 @@ class Bank {
 
         void updateCSV(const std::string& fileName);
 
-        void bankUpdateCSV(const std::string& file);
-
         //Demo
 
         //void demo(Bank bank);
@@ -21,7 +19,9 @@ class Bank {
         //void selectSort(Bank bank);
 
         //void selectSearch(Bank bank);
-        
+
+        void demo(int choice);
+
         //Search
         int binarySearchByNumber(int accountNumber);
 
@@ -49,6 +49,14 @@ class Bank {
         void merge(int left, int middle, int right, bool compare = true);
 
         void mergeSort(int left, int right, bool compare = true);
+
+        void mergeSortByNumber();
+
+        void mergeSortByBalance();
+
+        void quickSortByNumber();
+
+        void quickSortByBalance();
 
         void mergeSortByNumber(int left, int right);
 
